@@ -38,4 +38,6 @@ Here's how to run this script :
    
    ![Output](Images/spotify2.png)
    
-   P.S. You may have to search some files manually. You can find the list inside your local playlist folder :))
+   P.S. You may have to search some songs manually. You can find the list inside your local playlist folder :))
+   
+   Resources : StackOverflow and [this video](https://youtu.be/jSOrEmKUd_c) to use Spotify API!
