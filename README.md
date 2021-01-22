@@ -20,19 +20,15 @@ Here's how to run this script :
   - Sign up on [Spotify Developers](https://developer.spotify.com/)
   - Go to Dashboard, and create a new App - give any random App name and description to get your credentials.
   - In the 'new App' settings, add your `REDIRECT_URI` as `http://127.0.0.1:8080/`
-  - Note down your `Client ID`, `Client Secret`, `REDIRECT URI` & `Spotify Username` -> You will need it in later steps.
+  - Note down your `Client ID`, `Client Secret`, `REDIRECT URI` & `Spotify Username` -> Enter these details in `credentials.txt` file.
   
 2. Create a virtual environment (Python 3+)  (Optional, but preferred)
   - Install Spotipy : `pip install spotipy`
   - Clone this repo : `git clone https://github.com/withoutwaxaryan/transfer-local-playlist-to-spotify.git`
   
-3. Execute the Script
+3. Executing the Script
   - Activate your environment
-  - Export the following environment variables
-      - `export SPOTIPY_CLIENT_ID=` (add your client id)
-      - `export SPOTIPY_CLIENT_SECRET=` (add your client secret)
-      - `export SPOTIPY_REDIRECT_URI=` (add your redirect URI)
-   - Run the script : `python local_to_spotify.py` and follow along in the terminal!
+  - Run the script : `python local_to_spotify.py` and follow along in the terminal!
    
    Will look like this : 
    
@@ -40,4 +36,4 @@ Here's how to run this script :
    
    P.S. You may have to search some songs manually. You can find the list inside your local playlist folder :))
    
-   Resources : StackOverflow and [this video](https://youtu.be/jSOrEmKUd_c) to use Spotify API!
+   (Resources used : StackOverflow and [this video](https://youtu.be/jSOrEmKUd_c) to use Spotify API!)
