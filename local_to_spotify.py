@@ -118,7 +118,7 @@ def add_songs_to_spotify_playlist(playlist_id):
             spotifyObject.user_playlist_add_tracks(user=username, playlist_id=playlist_id, tracks=songs_to_search)
         except Exception as e:
             print(e)
-    print('Playlist created!')
+    print('Playlist created of ' + str(len(songs_found_on_spotify)) + " songs!")
 
 
 # Create text file of songs not identified
