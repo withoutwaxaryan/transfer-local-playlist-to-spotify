@@ -6,6 +6,7 @@ import time
 import re
 
 # Lists to define list of songs
+credentials = []  #  list of credentials
 local_playlist = []  # Original local playlist
 search_playlist = []  # Songs to be searched on Spotify
 songs_found_on_spotify = []  # list of ids of identified songs
@@ -13,11 +14,25 @@ songs_not_found = []  # songs not identified by spotify
 cleaned_songs = []  # list of processed song titles
 
 
-# Authorize Spotify Developer API
+# import credentials from file
 scope = 'playlist-modify-public'  # for a public playlist
-username = input("Enter your Spotify username: ")  # Add your username
+credentials.append(scope)
+for line in open("credentials.txt", "r").readlines():
+    info = line.split()
+    if info[0] == "spotify_username=":
+        credentials.append(str(info[1]))
+    elif info[0] == "SPOTIPY_CLIENT_ID=":
+        credentials.append(str(info[1]))
+    elif info[0] == "SPOTIPY_CLIENT_SECRET=":
+        credentials.append(str(info[1]))
+    elif info[0] == "SPOTIPY_REDIRECT_URI=":
+        credentials.append(str(info[1]))
 
-token = SpotifyOAuth(scope=scope, username=username)
+# Authorize credentials through Spotify Developer API
+username = credentials[1]
+token = SpotifyOAuth(scope=credentials[0], username=credentials[1], 
+                     client_id=credentials[2], client_secret=credentials[3],
+                     redirect_uri=credentials[4])
 spotifyObject = spotipy.Spotify(auth_manager=token)
 
 
@@ -30,14 +45,14 @@ def find_local_playlist():
             for file in os.listdir(local_playlist_location):
                 if file.endswith(".mp3"):  # look for mp3 files
                     local_playlist.append(file)  # creates a list of names of songs in local playlist
+            print(local_playlist_location)
+            return local_playlist_location
         else:
             print("Sorry, I didnt find any audio file in this directory")
             find_local_playlist()      
     else:
         print("I think u messed up, I couldn't find this directory.")
         find_local_playlist()
-
-    return local_playlist_location
 
 
 # Read content from the stop_words file
@@ -57,7 +72,7 @@ def strip_stop_words(stop_words):
 
 
 # Creates playlist in Spotify with title & description
-def create_playlist(spotifyObject):
+def create_playlist():
     playlist_name = input("Enter Spotify Playlist Name : ")
     playlist_desc = input("Enter Spotify Playlist Description : ")
     spotifyObject.user_playlist_create(user=username, name=playlist_name, public=True, description=playlist_desc)  
@@ -137,7 +152,7 @@ def main():
     playlist_location = find_local_playlist()
     stop_words = import_stop_words()
     strip_stop_words(stop_words)
-    create_playlist(spotifyObject)
+    create_playlist()
     search_songs_on_spotify(search_playlist)
     clean_song_name(songs_not_found)
     playlist_id = access_playlist()
