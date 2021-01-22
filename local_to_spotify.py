@@ -45,7 +45,6 @@ def find_local_playlist():
             for file in os.listdir(local_playlist_location):
                 if file.endswith(".mp3"):  # look for mp3 files
                     local_playlist.append(file)  # creates a list of names of songs in local playlist
-            print(local_playlist_location)
             return local_playlist_location
         else:
             print("Sorry, I didnt find any audio file in this directory")
@@ -66,7 +65,8 @@ def import_stop_words():
 # Remove stop words and punctuation from song name
 def strip_stop_words(stop_words):
     for song in local_playlist:
-        stripped_name = [word for word in re.split("\W+", song) if word.lower() not in stop_words]
+        song = re.sub(r'([^a-zA-Z ]+?)', ' ', song)  # removes numbers
+        stripped_name = [word for word in re.split("\W+", song) if word.lower() not in stop_words]  # removes punctuation
         song = ' '.join(stripped_name)
         search_playlist.append(song)
 
