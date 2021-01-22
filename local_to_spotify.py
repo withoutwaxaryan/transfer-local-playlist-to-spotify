@@ -24,25 +24,25 @@ spotifyObject = spotipy.Spotify(auth_manager=token)
 # Enter the location of your local playlist
 def find_local_playlist():
     print("Location can be entered as /home/aryan/Documents/my_playlist")
-    s = input("Enter location of local playlist : ")
-    if os.path.isdir(s):  # path exists
-        os.chdir(s)  # change directory to local playlist
-        if any(File.endswith(".mp3") for File in os.listdir()):  # check for audio file in inputted directory
-            for file in os.listdir():
+    local_playlist_location = input("Enter location of local playlist : ")
+    if os.path.isdir(local_playlist_location):  # path exists
+        if any(File.endswith(".mp3") for File in os.listdir(local_playlist_location)):  # check for audio file in inputted directory
+            for file in os.listdir(local_playlist_location):
                 if file.endswith(".mp3"):  # look for mp3 files
                     local_playlist.append(file)  # creates a list of names of songs in local playlist
         else:
             print("Sorry, I didnt find any audio file in this directory")
-            find_local_playlist()
-        
+            find_local_playlist()      
     else:
         print("I think u messed up, I couldn't find this directory.")
         find_local_playlist()
 
+    return local_playlist_location
+
 
 # Read content from the stop_words file
 def import_stop_words():
-    f = open('../stop_words.txt', 'r')
+    f = open("stop_words.txt", "r")
     stop_words = f.read().split()
     f.close()
     return stop_words
@@ -122,21 +122,19 @@ def add_songs_to_spotify_playlist(playlist_id):
 
 
 # Create text file of songs not identified
-def create_txt_file(songs_not_found):
+def create_txt_file(songs_not_found, playlist_location):
     print("I could not search " + str(len(songs_not_found)) + " songs :((")
-    time.sleep(0.3)
     print("You will have to manually search these songs on Spotify")
-    with open('remaining_songs.txt', mode='wt', encoding='utf-8') as myfile:
+    with open(playlist_location + '/remaining_songs.txt', mode='wt', encoding='utf-8') as myfile:
         for song in songs_not_found:
             myfile.write(song)
             myfile.write('\n')
-    time.sleep(0.5)
     print("You can find them in remaining_songs.txt inside your local playlist folder")
 
 
 def main():
 
-    find_local_playlist()
+    playlist_location = find_local_playlist()
     stop_words = import_stop_words()
     strip_stop_words(stop_words)
     create_playlist(spotifyObject)
@@ -144,7 +142,7 @@ def main():
     clean_song_name(songs_not_found)
     playlist_id = access_playlist()
     add_songs_to_spotify_playlist(playlist_id)
-    create_txt_file(songs_not_found)
+    create_txt_file(songs_not_found, playlist_location)
 
 
 if __name__ == "__main__":
