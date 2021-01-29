@@ -24,6 +24,7 @@ Here's how to run this script :
   
 2. Create a virtual environment (Python 3+)  (Optional, but preferred)
   - Install Spotipy : `pip install spotipy`
+  - Install Audio-Metadata : `pip install audio-metadata`
   - Clone this repo : `git clone https://github.com/withoutwaxaryan/transfer-local-playlist-to-spotify.git`
   
 3. Executing the Script
