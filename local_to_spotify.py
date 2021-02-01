@@ -71,6 +71,13 @@ def access_metadata():
             metadata = audio_metadata.load(file)
             song = metadata['tags'].title[0]
             song = re.sub('\W+',' ', song)
+            if len(song.split()) < 3:
+                try:
+                    artist = metadata['tags'].artist[0]
+                    artist = re.sub('\W+',' ', artist)
+                    song = song + " " + artist
+                except:
+                    songs_without_metadata.append(song)
             search_playlist.append(song)
         except:
             songs_without_metadata.append(file)
