@@ -76,9 +76,9 @@ def access_metadata():
                     artist = metadata['tags'].artist[0]
                     artist = re.sub('\W+',' ', artist)
                     song = song + " " + artist
+                    search_playlist.append(song)
                 except:
                     songs_without_metadata.append(song)
-            search_playlist.append(song)
         except:
             songs_without_metadata.append(file)
 
