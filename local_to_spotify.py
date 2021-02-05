@@ -8,8 +8,7 @@ import audio_metadata
 
 # Lists to define list of songs
 credentials = []  #  list of credentials
-local_playlist = []  # Original local playlist
-songs_without_metadata = []  # songs not having metadata
+local_playlist = []  # Original local playlist title list
 search_playlist = []  # Songs to be searched on Spotify
 songs_found_on_spotify = []  # list of ids of identified songs
 songs_not_found = []  # songs not identified by spotify
@@ -45,12 +44,12 @@ def find_local_playlist():
     if os.path.isdir(local_playlist_location):  # path exists
         if any(File.endswith(".mp3") for File in os.listdir(local_playlist_location)):  # check for mp3 audio file in inputted directory
             for file in os.listdir(local_playlist_location):
-                if file.endswith(".mp3"):  # look for mp3 files
+                if file.lower().endswith(".mp3"):  # look for mp3 files
                     local_playlist.append(file)  # creates a list of names of songs in local playlist
             return local_playlist_location
         else:
             print("Sorry, I didnt find any audio file in this directory")
-            find_local_playlist()      
+            find_local_playlist()     
     else:
         print("I think u messed up, I couldn't find this directory.")
         find_local_playlist()
@@ -65,22 +64,24 @@ def create_playlist():
 
 
 # Looks for metadata titles in files
-def access_metadata():
-    for file in local_playlist:
-        try:
-            metadata = audio_metadata.load(file)
-            song = metadata['tags'].title[0]
-            song = re.sub('\W+',' ', song)
-            if len(song.split()) < 3:
-                try:
-                    artist = metadata['tags'].artist[0]
-                    artist = re.sub('\W+',' ', artist)
-                    song = song + " " + artist
-                    search_playlist.append(song)
-                except:
-                    songs_without_metadata.append(song)
-        except:
-            songs_without_metadata.append(file)
+def access_metadata(playlist_location):
+    for file in os.listdir(playlist_location):
+        if file.lower().endswith(".mp3"):
+            try:
+                metadata = audio_metadata.load(playlist_location + "/" + file)  # there is a problem here
+                song = metadata['tags'].title[0]
+                song = re.sub('\W+',' ', song)
+                local_playlist.remove(file)
+                if len(song.split()) < 3:
+                    try:
+                        artist = metadata['tags'].artist[0]
+                        artist = re.sub('\W+',' ', artist)
+                        song = song + " " + artist
+                    except:
+                        a = 3
+                local_playlist.append(song)
+            except Exception as e:
+                b =4
 
 
 # Read content from the stop_words file
@@ -108,7 +109,6 @@ def search_song_on_spotify(song):
         songs_found_on_spotify.append(search_result['tracks']['items'][0]['uri'])
         return True
     except Exception as e:
-        # print(e)
         songs_not_found.append(song)
         return False
 
@@ -161,20 +161,20 @@ def add_songs_to_spotify_playlist(playlist_id):
 def create_txt_file(songs_not_found, playlist_location):
     print("I could not search " + str(len(songs_not_found)) + " songs :((")
     print("You will have to manually search these songs on Spotify")
-    with open(playlist_location + '/remaining_songs.txt', mode='wt', encoding='utf-8') as myfile:
+    with open(playlist_location + '/remaining_songs.csv', mode='wt', encoding='utf-8') as myfile:
         for song in songs_not_found:
             myfile.write(song)
             myfile.write('\n')
-    print("You can find them in remaining_songs.txt inside your local playlist folder")
+    print("You can find them in remaining_songs.csv inside your local playlist folder")
 
 
 def main():
 
     playlist_location = find_local_playlist()
     create_playlist()
-    access_metadata()
+    access_metadata(playlist_location)
     stop_words = import_stop_words()
-    strip_stop_words(stop_words, songs_without_metadata)
+    strip_stop_words(stop_words, local_playlist)
     search_songs_on_spotify(search_playlist)
     clean_song_name(songs_not_found)
     playlist_id = access_playlist()
