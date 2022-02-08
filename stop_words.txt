@@ -28,6 +28,7 @@ downloader
 downloadkaraokemusics
 downloadming
 downloads
+dscvr
 dubstep
 dvd
 edit
@@ -42,7 +43,6 @@ full
 ft
 gana
 ganamp
-get
 goo
 glu
 hd
@@ -56,6 +56,7 @@ karaoke
 kbps
 keepvid
 khan
+latest
 live
 lyric
 lyrical
@@ -87,8 +88,11 @@ pk
 prime
 primemusic
 proper
+punjabi
 quality
 raagjatt
+record
+records
 remix
 rendition
 royaljatt
@@ -96,6 +100,7 @@ ru
 sasisa
 screen
 se
+sleepmusic
 song
 songira
 songpkmusic
@@ -120,7 +125,6 @@ w
 wap
 wapking
 wapos
-with
 wmv
 www
 x

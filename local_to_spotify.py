@@ -7,7 +7,7 @@ import re
 import audio_metadata
 
 # Lists to define list of songs
-credentials = []  #  list of credentials
+credentials = []  # list of credentials
 local_playlist = []  # Original local playlist title list
 search_playlist = []  # Songs to be searched on Spotify
 songs_found_on_spotify = []  # list of ids of identified songs
@@ -48,8 +48,8 @@ def find_local_playlist():
                     local_playlist.append(file)  # creates a list of names of songs in local playlist
             return local_playlist_location
         else:
-            print("Sorry, I didnt find any audio file in this directory")
-            find_local_playlist()     
+            print("Sorry, I didn't find any audio file in this directory")
+            find_local_playlist()    
     else:
         print("I think u messed up, I couldn't find this directory.")
         find_local_playlist()
@@ -121,8 +121,9 @@ def search_songs_on_spotify(playlist):
 
 # Process the song title again for better identification
 def clean_song_name(songs_not_found):
+    # print(len(songs_not_found))
     for song in songs_not_found:
-        if len(song.split()) > 3:
+        if len(song.split()) > 3:  # >=6
             new_song = song.split()[:4]  # first 4 words of the title
         else:
             new_song = song.split()[:3]  # first 3 words of the title
