@@ -158,8 +158,8 @@ def add_songs_to_spotify_playlist(playlist_id):
     print('Playlist created of ' + str(len(songs_found_on_spotify)) + " songs!")
 
 
-# Create text file of songs not identified
-def create_txt_file(songs_not_found, playlist_location):
+# Create csv file of songs not identified
+def create_csv_file(songs_not_found, playlist_location):
     print("I could not search " + str(len(songs_not_found)) + " songs :((")
     print("You will have to manually search these songs on Spotify")
     with open(playlist_location + '/remaining_songs.csv', mode='wt', encoding='utf-8') as myfile:
@@ -181,7 +181,7 @@ def main():
     playlist_id = access_playlist()
     add_songs_to_spotify_playlist(playlist_id)
     if len(songs_not_found) > 0:
-        create_txt_file(songs_not_found, playlist_location)
+        create_csv_file(songs_not_found, playlist_location)
 
 
 if __name__ == "__main__":
